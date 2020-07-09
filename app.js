@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+//require module in current directory
+const date = require(__dirname + '/date.js');
 
 const app = express();
 
@@ -7,28 +9,16 @@ app.set('view engine', 'ejs');
 //must be used to get the body
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-let items = [];
-let workItems = [];
+const items = [];
+const workItems = [];
 
 app.get('/', (req, res) => {
-  let today = new Date();
-
-  const options = {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  };
-
-  let day = today.toLocaleDateString('en-US', options);
+  const day = date.getDate();
   res.render('list', { listTitle: day, newListItems: items });
 });
 
-app.get('/work', (req, res) => {
-  res.render('list', { listTitle: 'Work List', newListItems: workItems });
-});
-
 app.post('/', (req, res) => {
-  let item = req.body.newItem;
+  const item = req.body.newItem;
   if (req.body.list === 'Work') {
     workItems.push(item);
     res.redirect('/work');
@@ -36,6 +26,14 @@ app.post('/', (req, res) => {
     items.push(item);
     res.redirect('/');
   }
+});
+
+app.get('/work', (req, res) => {
+  res.render('list', { listTitle: 'Work List', newListItems: workItems });
+});
+
+app.get('/about', (req, res) => {
+  res.render('about');
 });
 
 app.listen(3000, () => console.log('Server started on port 3000'));
