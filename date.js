@@ -1,4 +1,4 @@
-console.log(module);
+//console.log(module);
 
 exports.getDate = function () {
   const today = new Date();

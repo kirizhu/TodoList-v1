@@ -4,10 +4,16 @@
 </div>
 <div class="box">
   <% newListItems.forEach(item => { %>
-  <div class="item">
-    <input type="checkbox" />
-    <p><%= item %></p>
-  </div>
+  <form action="/delete" method="post">
+    <div class="item">
+      <!-- prettier-ignore -->
+      <input value=<%= item._id %> type="checkbox" name="checkbox"
+      onChange="this.form.submit()" />
+      <p><%= item.name %></p>
+    </div>
+    <!-- prettier-ignore -->
+    <input value=<%= listTitle %> type="hidden" name="listName"></input>
+  </form>
   <%})%>
 
   <form class="item" action="/" method="post">
